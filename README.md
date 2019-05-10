@@ -59,3 +59,7 @@ result =
 }
 */
 ```
+
+## Credits
+
+Heavily inspired by [patchinko](https://github.com/barneycarroll/patchinko) by [Barney Carroll](https://github.com/barneycarroll).
