@@ -17,8 +17,7 @@ const newState = merge(state, {
 })
 
 /*
-result = 
-{
+result = {
   user: {
     name: 'Bob',
     age: 17,
@@ -50,8 +49,7 @@ const newState = mergerino(state, {
 })
 
 /*
-result = 
-{
+result = {
   user: {
     name: 'Bob',
     age: 17,
