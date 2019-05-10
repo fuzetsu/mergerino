@@ -2,7 +2,7 @@
 
 immutable merge for state management
 
-## ES6 Usage
+## esm module usage
 
 ```js
 import merge, { SUB, DEL } from 'https://unpkg.com/mergerino?module'
@@ -32,7 +32,7 @@ result =
 - each part of `state` that your patch instruction touched will be shallow copied into `newState`
 - untouched properties retain the same references.
 
-## ES5 Usage
+## ES5 browser usage
 
 ```html
 <script src="https://unpkg.com/mergerino"></script>
