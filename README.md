@@ -27,6 +27,7 @@ result =
 }
 */
 ```
+[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvEAXwvW10QICsEqdBk2J4IWAA60ATsQAEOaQHMYFOcDkBlAKoAhNQBEAogBk5rOWGm0scgOQliEuIgD0rgK5oJAayX46LFdFFWkINFoAfixaABMPWDsAHTQUoTh5DIxGOQBedTkPOBhpRALMHDK7AClaQjQ7NQwVMoBmABY1AHcYCCUSMoBGAA4ABjVCXv7iIYB2WfNzNPoMuTQYLs1ibJg8hRKVAAosxjVgFLlC4tL1C8u1rirdWgAjRrvLnr6BuWMTCg+cmaMDKOl0h2BeQAfECVHJXHIAEwASjurBSrFRqTQ6VosHwUFoSmO21O9iSKUaaw2Wx2yMoIGKsGoxAgKzwg0GiA6bA4IAq3AI1DgAho9EYzB4bAAuqwgA)
 
 - `state` is left intact
 - each part of `state` that your patch instruction touched will be shallow copied into `newState`
@@ -59,6 +60,7 @@ result =
 }
 */
 ```
+[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHjmoCcIAHYgAjgdqAXgA6IEsW5xEAelkBXNNwDWAc3x0ssnBzUwuaWuIB8LWey68TlEHBixqxCPQSIQABkQBWAIwgAXwp0bFx3fAArBCo6BiZiPFi4fmSMRj5hPmA+BXsORCy+TBwCgHIAKVpCNFKKPgx9AoBmABY6gHcYCDUSAt8ADg86wi6e4j6Adgm+AJnRNCT+NBh2gGViNJgMvl19Q1oAClTGOuB5vhy8grO0C4vimDKAIVoAI1rzu87u3p2DPYgRnwABEAKIAGQonwuDUefz0BkBtHwqwAqk8DmAlE4XGgDrCAJSFDgwYgKDi3WF8WR8ABMMwJnwC8wCjLQ8yStFg+CgtDURw2Jz4pVE81qRRW602BNs9kczlceAAnIhWoFgiAHnhNHBojR6IxmO5AgBdAJAA)
 
 ## Credits
 
