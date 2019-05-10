@@ -2,7 +2,7 @@
 
 immutable merge for state management
 
-## esm module usage
+## ESM module usage
 
 ```js
 import merge, { SUB, DEL } from 'https://unpkg.com/mergerino?module'
@@ -44,7 +44,7 @@ const newState = mergerino(state, {
   user: {
     name: 'Bob',
     weight: mergerino.DEL,
-    age: mergerino.SUB(age => age / 2)
+    age: mergerino.SUB(function(age) { return age / 2 })
   }
 })
 
