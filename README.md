@@ -1,6 +1,6 @@
 # Mergerino [![npm](https://img.shields.io/npm/v/mergerino.svg)](https://www.npmjs.com/package/mergerino) [![size](https://img.badgesize.io/https://unpkg.com/mergerino@latest.png?label=gzip&color=blue&compression=gzip)](https://unpkg.com/mergerino@latest)
 
-immutable merge for state management
+An immutable merge util for state management.
 
 ## ESM module usage
 
