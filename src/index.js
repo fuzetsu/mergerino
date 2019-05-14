@@ -16,7 +16,7 @@ const merge = (source, ...patches) => {
         else if (val === DEL) isArr && !isNaN(k) ? res.splice(k, 1) : delete res[k]
         else if (val._SUB === _SUB)
           res[k] = typeof val.run === 'function' ? val.run(res[k]) : val.run
-        else if (typeof res[k] === 'object' && patch[k] !== res[k]) res[k] = merge(res[k], val)
+        else if (typeof res[k] === 'object' && val !== res[k]) res[k] = merge(res[k], val)
         else res[k] = val
       }
     } else if (type === 'function') res = patch(res)
