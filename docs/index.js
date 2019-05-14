@@ -22,9 +22,8 @@ document.body.innerHTML = `
     padding: 20px;
     border-radius: 8px;
     color: white;
-    max-width: 800px;
+    max-width: min-content;
     margin: 50px auto;
-    overflow-y: auto;
     box-shadow: 0 0 20px 1px rgba(0,0,0,0.5);
   }
   .string { color: #c3e88d; }
