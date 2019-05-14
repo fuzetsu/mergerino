@@ -33,6 +33,8 @@ document.body.innerHTML = `
 <pre id="output"><pre>
 `
 
+const output = document.getElementById('output')
+
 let state = {}
 
 const testMerge = patch => {
@@ -58,7 +60,7 @@ testMerge(state => {
 
 output.innerHTML = output.innerHTML
   .trim()
-  .replace(/("[^"]*")/g, `<span class="string">$1</span>`)
-  .replace(/(\/\/.+)/g, `<span class="comment">$1</span>`)
-  .replace(/(:\s*?)([^{,}]+)/g, `$1<span class="value">$2</span>`)
-  .replace(/[{}]/g, `<span class="braces">$&</span>`)
+  .replace(/("[^"]*")/g, '<span class="string">$1</span>')
+  .replace(/(\/\/.+)/g, '<span class="comment">$1</span>')
+  .replace(/(:\s*?)([^{,}]+)/g, '$1<span class="value">$2</span>')
+  .replace(/[{}]/g, '<span class="braces">$&</span>')
