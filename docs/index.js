@@ -20,9 +20,11 @@ document.body.innerHTML = `
   #output {
     background-color: #263238;
     padding: 20px;
-    margin: 50px;
     border-radius: 8px;
     color: white;
+    max-width: 800px;
+    margin: 50px auto;
+    overflow-y: auto;
     box-shadow: 0 0 20px 1px rgba(0,0,0,0.5);
   }
   .string { color: #c3e88d; }
