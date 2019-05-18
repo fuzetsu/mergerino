@@ -1,6 +1,6 @@
 {
   "name": "mergerino",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "immutable state merge util",
   "source": "src/index.js",
   "main": "dist/mergerino.es5.min.js",

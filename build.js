@@ -25,11 +25,26 @@ const terserOut = Terser.minify(
   }
 )
 
+const umdBoiler = `;(function(root, factory) {
+  if(typeof define === 'function' && define.amd) define([], factory)
+  else if(typeof module === 'object' && module.exports) module.exports = factory()
+  else root.${name} = factory()
+})(typeof self !== 'undefined' ? self : this, function() {
+  'use strict'
+  var exports = {}
+{{CODE}}
+  return exports
+})
+`
+
 const moduleToBrowser = code =>
-  `;(function() {\n  'use strict'\n  var exports = {}\n${code
-    .replace(/export\s+(const|let|var)\s+([^\s]+)/gi, `$1 $2 = exports.$2`)
-    .replace(/export\s+default\s+([^\s]+)/gi, `window.${name} = assign($1, exports)`)
-    .replace(/^/gm, '  ')}\n})()`
+  umdBoiler.replace(
+    '{{CODE}}',
+    code
+      .replace(/export\s+(const|let|var)\s+([^\s]+)/gi, '$1 $2 = exports.$2')
+      .replace(/export\s+default\s+([^\s]+)/gi, 'exports = assign($1, exports)')
+      .replace(/^/gm, '  ')
+  )
 
 const bubleOut = buble.transform(moduleToBrowser(input), {
   modules: false,
