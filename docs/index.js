@@ -13,7 +13,12 @@ import merge, { SUB, DEL } from 'https://unpkg.com/mergerino?module'
 // import merge, { SUB, DEL } from '../dist/mergerino.min.js'
 
 DEL.toJSON = () => '(DEL)'
-SUB()._SUB.toJSON = () => '(SUB)'
+const _SUB = SUB()._SUB
+const iSUB = run => ({
+  _SUB,
+  run,
+  toJSON: () => 'SUB(' + run + ')'
+})
 
 document.body.innerHTML = `
 <style>
@@ -49,15 +54,14 @@ const testMerge = patch => {
 }
 
 testMerge({ count: 3 })
-testMerge({ count: SUB(x => x ** 3) })
+testMerge({ count: iSUB(x => x ** 3) })
 testMerge({ hello: 'world' })
 testMerge({ hello: DEL, coords: { x: 1, y: 2, z: 3 } })
 testMerge({ coords: { y: 10 } })
 testMerge({ hello: { amigo: 'carlos' } })
-testMerge({ hello: SUB({}) })
-testMerge(state => {
-  return { replaced: true, coords: state.coords }
-})
+testMerge({ hello: iSUB({}) })
+testMerge(() => ({ functionPath: true }))
+testMerge(iSUB({ replace: true }))
 
 output.innerHTML = output.innerHTML
   .trim()
