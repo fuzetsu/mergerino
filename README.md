@@ -108,7 +108,7 @@ If you pass `SUB` a function it will receive the current value as an argument an
 
 ## Mergerino as a reducer
 
-Mergerino can be used as a reducer where patches are fed into a function which is then applied to a central state object through mergerino. In these cases you may not have a reference to the full state object to base your patch on.
+Mergerino can be used as a reducer where patches are fed into a function which is then applied to a central state object. In these cases you may not have a reference to the full state object to base your patch on.
 
 In order to help in this scenario mergerino supports passing a function as a top level patch. This function receives the merge target as an argument and treats the return value as a patch.
 
