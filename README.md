@@ -2,7 +2,7 @@
 
 An immutable merge util for state management.
 
-Mergerino works very well with the [meiosis](http://meiosis.js.org/) state management pattern and is supported as an [official setup option](https://github.com/foxdonut/meiosis/tree/master/helpers/setup#mergerino-setup).
+Mergerino works very well with the [meiosis](http://meiosis.js.org/) state management pattern and is offered as a [setup option](https://github.com/foxdonut/meiosis/tree/master/helpers/setup#mergerino-setup).
 
 ## ESM module usage
 
@@ -77,7 +77,12 @@ merge(state, { I: { am: { a: 'POJO' } } })
 
 Mergerino is immutable so the `target` object will never be modified by mergerino. Instead each object along the path your patch specifies will be shallow copied into a new object.
 
-The advantage of this is that patch operations are very quick because we only copy the part of the object that are touched, and you can use strict equality to determine where an object was changed by a patch operation:
+Advantages:
+
+- quick: only clone necessary parts of object
+-
+
+The advantage of this is that patch operations are very quick because it only copies the parts of the object that are touched, and you can use strict equality to determine where an object was changed by a patch operation:
 
 ```js
 const state = { obj: {} }
