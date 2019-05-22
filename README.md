@@ -77,12 +77,7 @@ merge(state, { I: { am: { a: 'POJO' } } })
 
 Mergerino is immutable so the `target` object will never be modified by mergerino. Instead each object along the path your patch specifies will be shallow copied into a new object.
 
-Advantages:
-
-- quick: only clone necessary parts of object
--
-
-The advantage of this is that patch operations are very quick because it only copies the parts of the object that are touched, and you can use strict equality to determine where an object was changed by a patch operation:
+The advantage of this is that patch operations are very quick because it only copies the parts of the object that are touched, and you can use strict equality (`===`) to determine where an object was changed by a patch operation:
 
 ```js
 const state = { obj: {} }
