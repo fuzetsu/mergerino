@@ -3,11 +3,13 @@ export const SUB = run => ({ _SUB, run })
 export const DEL = {}
 
 const assign = Object.assign || ((a, b) => (Object.keys(b).forEach(k => (a[k] = b[k])), a))
+const flat = arr =>
+  arr.reduce((acc, x) => (Array.isArray(x) ? acc.push(...flat(x)) : acc.push(x), acc), [])
 
 const merge = (source, ...patches) => {
   const isArr = Array.isArray(source)
   let res = isArr ? source.slice() : assign({}, source)
-  for (const patch of patches) {
+  for (const patch of flat(patches)) {
     const type = typeof patch
     if (patch && type === 'object') {
       if (patch._SUB === _SUB) res = patch.run

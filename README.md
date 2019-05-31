@@ -4,7 +4,7 @@ An immutable merge util for state management.
 
 Mergerino works very well with the [meiosis](http://meiosis.js.org/) state management pattern and is offered as a [setup option](https://github.com/foxdonut/meiosis/tree/master/helpers/setup#mergerino-setup).
 
-## ESM module usage
+## ESM installation
 
 ```js
 import merge, { SUB, DEL } from 'https://unpkg.com/mergerino?module'
@@ -35,7 +35,7 @@ result = {
 - each part of `state` that your patch instruction touched will be shallow copied into `newState`
 - untouched properties retain the same references.
 
-## ES5 browser usage
+## ES5 browser installation
 
 ```html
 <script src="https://unpkg.com/mergerino"></script>
@@ -52,20 +52,20 @@ result = {
   })
 
   /*
-result = {
-  user: {
-    name: 'Bob',
-    age: 17,
-    height: 177
+  result = {
+    user: {
+      name: 'Bob',
+      age: 17,
+      height: 177
+    }
   }
-}
-*/
+  */
 </script>
 ```
 
 [playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHjmoCcIAHYgAjgdqAXgA6IEsW5xEAelkBXNNwDWAc3x0ssnBzUwuaWuIB8LWey68TlEHBixqxCPQSIQABkQBWAIwgAXwp0bFx3fAArBCo6BiZiPFi4fmSMRj5hPmA+BXsORCy+TBwCgHIAKVpCNFKKPgx9AoBmABY6gHcYCDUSAt8ADg86wi6e4j6Adgm+AJnRNCT+NBh2gGViNJgMvl19Q1oAClTGOuB5vhy8grO0C4vimDKAIVoAI1rzu87u3p2DPYgRnwABEAKIAGQonwuDUefz0BkBtHwqwAqk8DmAlE4XGgDrCAJSFDgwYgKDi3WF8WR8ABMMwJnwC8wCjLQ8yStFg+CgtDURw2Jz4pVE81qRRW602BNs9kczlceAAnIhWoFgiAHnhNHBojR6IxmO5AgBdAJAA)
 
-## General Usage
+## Usage Guide
 
 Mergerino is made up a single function `merge(target, ...patches)`, plus 2 helpers `DEL` and `SUB`.
 
@@ -106,7 +106,56 @@ console.log(newState) // { age: 20, obj: { replaced: true } }
 
 If you pass `SUB` a function it will receive the current value as an argument and the return value will be the replacement. If you directly pass a value to `SUB` it will bypass merging logic and simple overwrite the property (this is mainly useful for objects).
 
-## Mergerino as a reducer
+## Multiple Patches
+
+You can pass multiple patches in a single merge call, array arguments will be flattened before processing.
+
+All the following are valid:
+
+```js
+merge(state, [{}, {}, {}])
+merge(state, {}, {}, {})
+merge(state, [[[[{}]]]])
+merge(state, [{}], [{}], [{}])
+```
+
+Another nice side effect of flattening array arguments is that you can easily add conditions to your patches using nested arrays:
+
+```js
+merge(state, [
+  somePremadePatch,
+  state.age < 10 && { child: true },
+  state.job === 'programmer' && [
+    state.promote && { promoted: true },
+    !state.salaryPaid && { schedulePayment: true }
+  ]
+])
+```
+
+If all the above conditions are false the final patch array after flattening will look like this:
+
+```js
+patches === [somePremadePatch, false, false, false]
+```
+
+Since falsy patches are ignored only the pre-made patch will take place.
+
+Another option is to use the spread operator to combine multiple patches into one, but it's harder/messier to write conditions using that method:
+
+```js
+merge(state, {
+  ...somePremadePatch,
+  ...(state.age < 10 ? { child: true } : {}),
+  ...(state.job === 'programmer'
+    ? {
+        ...(state.promote ? { promoted: true } : {}),
+        ...(!state.salaryPaid ? { schedulePayment: true } : {})
+      }
+    : {})
+})
+```
+
+## As a reducer
 
 Mergerino can be used as a reducer where patches are fed into a function which is then applied to a central state object. In these cases you may not have a reference to the full state object to base your patch on.
 

@@ -43,12 +43,16 @@ const output = document.getElementById('output')
 
 let state = {}
 
-const testMerge = patch => {
-  state = merge(state, patch)
+const testMerge = (...patches) => {
+  state = merge(state, ...patches)
   console.log(state)
   output.textContent +=
     '\n\n\n// --> patched with ' +
-    JSON.stringify(typeof patch === 'function' ? patch.toString().replace(/\s+/g, ' ') : patch) +
+    JSON.stringify(
+      patches.flat(Number.MAX_SAFE_INTEGER).map(patch =>
+        typeof patch === 'function' ? patch.toString().replace(/\s+/g, ' ') : patch
+      )
+    ) +
     '\n\n' +
     JSON.stringify(state, null, 2)
 }
@@ -62,10 +66,13 @@ testMerge({ hello: { amigo: 'carlos' } })
 testMerge({ hello: iSUB({}) })
 testMerge(() => ({ functionPath: true }))
 testMerge(iSUB({ replace: true }))
+testMerge({ multi: true }, { arg: true })
+testMerge([{ multi: false, multiArr: true }, () => ({ multiFunc: true, arg: DEL })])
+testMerge(() => [{ func: true }, { arrReturn: true }])
 
 output.innerHTML = output.innerHTML
   .trim()
   .replace(/("[^"]*")/g, '<span class="string">$1</span>')
   .replace(/(\/\/.+)/g, '<span class="comment">$1</span>')
   .replace(/(:\s*?)([^{,}]+)/g, '$1<span class="value">$2</span>')
-  .replace(/[{}]/g, '<span class="braces">$&</span>')
+  .replace(/[{}\[\]]/g, '<span class="braces">$&</span>')
