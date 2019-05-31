@@ -132,15 +132,15 @@ merge(state, [
 ])
 ```
 
-If all the above conditions are false the final patch array after flattening will look like this:
+If all the above conditions are false (except the job check) the final patch array before flattening will look like this:
 
 ```js
-patches === [somePremadePatch, false, false, false]
+patches === [somePremadePatch, false, [false, false]]
 ```
 
 Since falsy patches are ignored only the pre-made patch will take place.
 
-Another option is to use the spread operator to combine multiple patches into one, but it's harder/messier to write conditions using that method:
+Another option is to use the spread operator to combine multiple patches into one, but it's harder/messier to write conditions using this technique:
 
 ```js
 merge(state, {
