@@ -123,7 +123,7 @@ Another nice side effect of flattening array arguments is that you can easily ad
 
 ```js
 merge(state, [
-  somePremadePatch,
+  { week: 56 },
   state.age < 10 && { child: true },
   state.job === 'programmer' && [
     state.promote && { promoted: true },
@@ -135,16 +135,16 @@ merge(state, [
 If all the above conditions are false (except the job check) the final patch array before flattening will look like this:
 
 ```js
-patches === [somePremadePatch, false, [false, false]]
+patches === [{ week: 56 }, false, [false, false]]
 ```
 
-Since falsy patches are ignored only the pre-made patch will take place.
+Since falsy patches are ignored only `{ week: 56 }` will be merged.
 
 Another option is to use the spread operator to combine multiple patches into one, but it's harder/messier to write conditions using this technique:
 
 ```js
 merge(state, {
-  ...somePremadePatch,
+  { week: 56 },
   ...(state.age < 10 ? { child: true } : {}),
   ...(state.job === 'programmer'
     ? {
