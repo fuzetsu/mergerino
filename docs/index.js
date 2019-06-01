@@ -49,9 +49,9 @@ const testMerge = (...patches) => {
   output.textContent +=
     '\n\n\n// --> patched with ' +
     JSON.stringify(
-      patches.flat(Number.MAX_SAFE_INTEGER).map(patch =>
-        typeof patch === 'function' ? patch.toString().replace(/\s+/g, ' ') : patch
-      )
+      patches
+        .flat(Number.MAX_SAFE_INTEGER)
+        .map(patch => (typeof patch === 'function' ? patch.toString().replace(/\s+/g, ' ') : patch))
     ) +
     '\n\n' +
     JSON.stringify(state, null, 2)
@@ -75,4 +75,4 @@ output.innerHTML = output.innerHTML
   .replace(/("[^"]*")/g, '<span class="string">$1</span>')
   .replace(/(\/\/.+)/g, '<span class="comment">$1</span>')
   .replace(/(:\s*?)([^{,}]+)/g, '$1<span class="value">$2</span>')
-  .replace(/[{}\[\]]/g, '<span class="braces">$&</span>')
+  .replace(/[{}[\]]/g, '<span class="braces">$&</span>')
