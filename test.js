@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 /* global require */
 const o = require('ospec')
-const merge = require('./dist/mergerino.es5.js')
+
+const depPath = './dist/mergerino.es5.js'
+const merge = require(depPath)
+
+// create version that uses assign polyfill
+const save = Object.assign
+Object.assign = null
+delete require.cache[require.resolve(depPath)]
+const noAssignMerge = require(depPath)
+Object.assign = save
 
 o.spec('mergerino', () => {
   o('DEL works', () => {
@@ -11,10 +20,13 @@ o.spec('mergerino', () => {
     o(state).deepEquals({ prop: true, other: true, deep: { prop: 'foo' } })
   })
   o('SUB works', () => {
-    const state = { age: 10, name: 'bob' }
-    const newState = merge(state, { age: merge.SUB(x => x * 10) })
-    o(newState).deepEquals({ age: 100, name: 'bob' })
-    o(state).deepEquals({ age: 10, name: 'bob' })
+    const state = { age: 10, name: 'bob', obj: { prop: true } }
+    const newState = merge(state, {
+      age: merge.SUB(x => x * 10),
+      obj: merge.SUB({ replaced: true })
+    })
+    o(newState).deepEquals({ age: 100, name: 'bob', obj: { replaced: true } })
+    o(state).deepEquals({ age: 10, name: 'bob', obj: { prop: true } })
   })
   o('add new sub object', () => {
     const state = { age: 10 }
@@ -51,9 +63,13 @@ o.spec('mergerino', () => {
       [{ arr: [1, 2, 3] }, [[{ prop: true }]], false, null],
       undefined,
       '',
+      0,
+      null,
       () => ({ age: 10 }),
       [[[[[[[{ age: merge.SUB(x => x * 3) }]]]]]]]
     )
+    o(newState).notEquals(state)
+    o(state).deepEquals({ foo: 'bar' })
     o(newState).deepEquals({
       foo: 'bar',
       baz: 5,
@@ -97,5 +113,11 @@ o.spec('mergerino', () => {
     const newState = merge(state, { deep: state.deep })
     o(newState).notEquals(state) // TODO: maybe try and be smarter, to avoid copy if patch changes nothing
     o(newState.deep).equals(state.deep)
+  })
+  o('assign polyfill works', () => {
+    const state = { prop: true, deep: { prop: true, deeper: { foo: 'bar' } } }
+    const newState = noAssignMerge(state, { prop: false, deep: { deeper: { new: true } } })
+    o(newState).notEquals(state)
+    o(newState).deepEquals({ prop: false, deep: { prop: true, deeper: { foo: 'bar', new: true } } })
   })
 })
