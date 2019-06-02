@@ -6,8 +6,8 @@
   "main": "dist/mergerino.es5.min.js",
   "module": "dist/mergerino.min.js",
   "scripts": {
-    "build": "node build.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js && npm test",
+    "test": "ospec test.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/fuzetsu/mergerino#readme",
   "devDependencies": {
     "buble": "^0.19.7",
+    "ospec": "^3.1.0",
     "terser": "^3.17.0"
   }
 }
