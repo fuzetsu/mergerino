@@ -42,7 +42,7 @@ const moduleToBrowser = code =>
     '{{CODE}}',
     code
       .replace(/export\s+(const|let|var)\s+([^\s]+)/gi, '$1 $2 = exports.$2')
-      .replace(/export\s+\{([^\}]+)\}/, (_, names) =>
+      .replace(/export\s+\{([^}]+)\}/, (_, names) =>
         names
           .split(',')
           .map(name => `exports.${name} = ${name}`)

@@ -67,17 +67,19 @@ result = {
 
 ## Usage Guide
 
-Mergerino is made up a single function `merge(target, ...patches)`, plus 2 helpers `DEL` and `SUB`.
+Mergerino is made up of a single function `merge(target, ...patches)`, plus 2 helpers `DEL` and `SUB`.
 
-Patches in mergerino are expressed as plain JavaScript objects (POJO):
+Patches in mergerino are expressed as plain old JavaScript objects:
 
 ```js
-merge(state, { I: { am: { a: 'POJO' } } })
+merge(state, { I: { am: { just: { an: 'object' } } } })
 ```
 
-Mergerino is immutable so the `target` object will never be modified by mergerino. Instead each object along the path your patch specifies will be shallow copied into a new object.
+Mergerino is immutable meaning that the `target` object passed will never be mutated (changed). Instead each object along the path your patch specifies will be shallow copied into a new object.
 
-The advantage of this is that patch operations are very quick because it only copies the parts of the object that are touched, and you can use strict equality (`===`) to determine where an object was changed by a patch operation:
+The advantage of this is that patch operations are relatively quick because they only copy the parts of the object that are touched.
+
+This means you can use strict equality (`===`) to determine where an object was changed by a patch operation:
 
 ```js
 const state = { obj: {} }

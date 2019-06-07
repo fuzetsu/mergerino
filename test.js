@@ -120,4 +120,11 @@ o.spec('mergerino', () => {
     o(newState).notEquals(state)
     o(newState).deepEquals({ prop: false, deep: { prop: true, deeper: { foo: 'bar', new: true } } })
   })
+  o('multi function patch, only copy once', () => {
+    const copies = []
+    merge({ key: 'value' }, Array.from({ length: 5 }, () => state => (copies.push(state), state)))
+    o(copies.length).equals(5)
+    o(typeof copies[0]).equals('object')
+    copies.every(copy => o(copy).equals(copies[0]))
+  })
 })
