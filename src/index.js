@@ -2,7 +2,7 @@ const _SUB = {}
 export const SUB = run => ({ _SUB, run })
 export const DEL = {}
 
-const assign = Object.assign || ((a, b) => (Object.keys(b).forEach(k => (a[k] = b[k])), a))
+const assign = Object.assign || ((a, b) => (b && Object.keys(b).forEach(k => (a[k] = b[k])), a))
 
 const run = (isArr, copy, patch) => {
   const type = typeof patch

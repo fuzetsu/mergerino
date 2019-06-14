@@ -116,9 +116,19 @@ o.spec('mergerino', () => {
   })
   o('assign polyfill works', () => {
     const state = { prop: true, deep: { prop: true, deeper: { foo: 'bar' } } }
-    const newState = noAssignMerge(state, { prop: false, deep: { deeper: { new: true } } })
+    let newState = noAssignMerge(
+      state,
+      { prop: false, deep: { deeper: { new: true } } },
+      false,
+      null,
+      '',
+      0
+    )
     o(newState).notEquals(state)
     o(newState).deepEquals({ prop: false, deep: { prop: true, deeper: { foo: 'bar', new: true } } })
+
+    newState = noAssignMerge(void 0, { foo: 'bar' })
+    o(newState).deepEquals({ foo: 'bar' })
   })
   o('multi function patch, only copy once', () => {
     const copies = []
@@ -126,5 +136,9 @@ o.spec('mergerino', () => {
     o(copies.length).equals(5)
     o(typeof copies[0]).equals('object')
     copies.every(copy => o(copy).equals(copies[0]))
+  })
+  o('does not throw error for falsy source', () => {
+    const newState = merge(void 0, { foo: 'bar' })
+    o(newState).deepEquals({ foo: 'bar' })
   })
 })
