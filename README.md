@@ -4,6 +4,8 @@ An immutable merge util for state management.
 
 Mergerino works very well with the [meiosis](http://meiosis.js.org/) state management pattern and is offered as a [setup option](https://github.com/foxdonut/meiosis/tree/master/helpers/setup#mergerino-setup).
 
+[Click here to see available builds of mergerino on npm](https://unpkg.com/mergerino/dist/).
+
 ## ESM installation
 
 ```js
