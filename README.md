@@ -11,13 +11,25 @@ Mergerino works very well with the [meiosis](http://meiosis.js.org/) state manag
 ```js
 import merge, { SUB, DEL } from 'https://unpkg.com/mergerino?module'
 
-const state = { user: { name: 'John', age: 34, weight: 180, height: 177 } }
+const state = {
+  user: {
+    name: 'John',
+    weight: 180,
+    age: 34,
+    height: 177
+  },
+  other: {
+    many: true,
+    properties: true
+  }
+}
 const newState = merge(state, {
   user: {
     name: 'Bob',
     weight: DEL,
-    age: SUB(age => age / 2)
-  }
+    age: age => age / 2
+  },
+  other: SUB({ replaced: true })
 })
 
 /*
@@ -26,12 +38,15 @@ result = {
     name: 'Bob',
     age: 17,
     height: 177
+  },
+  other: {
+    replaced: true
   }
 }
 */
 ```
 
-[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvEAXwvW10QICsEqdBk2J4IWAA60ATsQAEOaQHMYFOcDkBlAKoAhNQBEAogBk5rOWGm0scgOQliEuIgD0rgK5oJAayX46LFdFFWkINFoAfixaABMPWDsAHTQUoTh5DIxGOQBedTkPOBhpRALMHDK7AClaQjQ7NQwVMoBmABY1AHcYCCUSMoBGAA4ABjVCXv7iIYB2WfNzNPoMuTQYLs1ibJg8hRKVAAosxjVgFLlC4tL1C8u1rirdWgAjRrvLnr6BuWMTCg+cmaMDKOl0h2BeQAfECVHJXHIAEwASjurBSrFRqTQ6VosHwUFoSmO21O9iSKUaaw2Wx2yMoIGKsGoxAgKzwg0GiA6bA4IAq3AI1DgAho9EYzB4bAAuqwgA)
+[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvEAXwvW10QICsEqdBk2J4IWAA60ATsQAEOaQHMYFOcDkBlAKoAhNQBEAogBk5rOWGm0scgOQliEuIgD0rgK5oJAayX46LFdFFWkINFoAfixaABMPWDsAHTQUoTh5DIxGOQBedRS5OQ84GGlEArQioswcCrsAKVpCNDsKQuqAdxgIJRIKgEYADgAGdqrqjBUKgGYAFnHquUIevuJBgHYNjvYO2mIV8sqlrAw0AE8K4mkPVQ6iiWsJMuIIeCubmB2U1jT6DLkaBgnU0xGyMDyCjKKgAFFlGGpgB0SmUKkiJjUuPVdLQAEZte5ybq9fpyYwmRaTaZyKYQ3IAPhpKjkrjkACYdpT9ocKjpdDCNNIYBIoBhqDBYh9buYAJQ-OWpNDpWiwfBQWhKOFghH2JIpNqA4Gg8EyyggUqwaivf54NkzRDzNgcEC1bgEahwAQ0eiMZg8NgAXVYQA)
 
 - `state` is left intact
 - each part of `state` that your patch instruction touched will be shallow copied into `newState`
@@ -42,15 +57,27 @@ result = {
 ```html
 <script src="https://unpkg.com/mergerino"></script>
 <script>
-  const state = { user: { name: 'John', age: 34, weight: 180, height: 177 } }
+  const state = {
+    user: {
+      name: 'John',
+      weight: 180,
+      age: 34,
+      height: 177
+    },
+    other: {
+      many: true,
+      properties: true
+    }
+  }
   const newState = mergerino(state, {
     user: {
       name: 'Bob',
       weight: mergerino.DEL,
-      age: mergerino.SUB(function(age) {
+      age: function(age) {
         return age / 2
-      })
-    }
+      }
+    },
+    other: mergerino.SUB({ replaced: true })
   })
 
   /*
@@ -59,13 +86,16 @@ result = {
       name: 'Bob',
       age: 17,
       height: 177
+    },
+    other: {
+      replaced: true
     }
   }
   */
 </script>
 ```
 
-[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHjmoCcIAHYgAjgdqAXgA6IEsW5xEAelkBXNNwDWAc3x0ssnBzUwuaWuIB8LWey68TlEHBixqxCPQSIQABkQBWAIwgAXwp0bFx3fAArBCo6BiZiPFi4fmSMRj5hPmA+BXsORCy+TBwCgHIAKVpCNFKKPgx9AoBmABY6gHcYCDUSAt8ADg86wi6e4j6Adgm+AJnRNCT+NBh2gGViNJgMvl19Q1oAClTGOuB5vhy8grO0C4vimDKAIVoAI1rzu87u3p2DPYgRnwABEAKIAGQonwuDUefz0BkBtHwqwAqk8DmAlE4XGgDrCAJSFDgwYgKDi3WF8WR8ABMMwJnwC8wCjLQ8yStFg+CgtDURw2Jz4pVE81qRRW602BNs9kczlceAAnIhWoFgiAHnhNHBojR6IxmO5AgBdAJAA)
+[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHjmoCcIAHYgAjgdqAXgA6IEsW5xEAelkBXNNwDWAc3x0ssnBzUwuaWuIB8LWey68TlEHBixqxCPQSIQABkQBWAIwgAXwp0bFx3fAArBCo6BiZiPFi4fmSMRj5hPmBRND4+BXsORCycvLzMHGKAcgApWkI0KopSsoB3GAg1EmLfAA4PZtyyjH1igGYAFkGyvkIOruIegHYllqCW2mI5opKhvKwMNABPYuIOBRhpsu4OWm4DZ3hT85g1nICcpP40GFaAZWIaRgGT4un0hloAApUowKLs8gUDMVsns+BUYNUAEK0ABGTRaeXanW6oIM4IgRnwABEAKIAGSueRGGL4zIyJlZ+j4sj4ACY1ldNttimCDBTaPg-gBVTGQ4B8DgwbhQDDUGAAE2eFz4AQAlO99WhPq5aLB8FBaGpoYDYXwqqIck00b8AUDdbZ7I5nK48LzfIhJoFgiB0XhNHBojR6IxmO5AgBdAJAA)
 
 ## Usage Guide
 
@@ -99,16 +129,16 @@ console.log(state) // { deleteMe: true }
 console.log(newState) // {}
 ```
 
-If you want to replace a property based on its current value, or bypass merging logic and fully replace a property you can use `SUB`.
+If you want to replace a property based on its current value, use a function. To bypass merging logic and fully replace a property you can use `SUB`.
 
 ```js
 const state = { age: 10, obj: { foo: 'bar' } }
-const newState = merge(state, { age: SUB(x => x * 2), obj: SUB({ replaced: true }) })
+const newState = merge(state, { age: x => x * 2, obj: SUB({ replaced: true }) })
 console.log(state) // { age: 10, obj: { foo: 'bar' } }
 console.log(newState) // { age: 20, obj: { replaced: true } }
 ```
 
-If you pass `SUB` a function it will receive the current value as an argument and the return value will be the replacement. If you directly pass a value to `SUB` it will bypass merging logic and simple overwrite the property (this is mainly useful for objects).
+If you pass a function it will receive the current value as an argument and the return value will be the replacement. If you use `SUB` the value you pass will bypass merging logic and simple overwrite the property (this is mainly useful for objects).
 
 ## Multiple Patches
 

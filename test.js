@@ -22,7 +22,7 @@ o.spec('mergerino', () => {
   o('SUB works', () => {
     const state = { age: 10, name: 'bob', obj: { prop: true } }
     const newState = merge(state, {
-      age: merge.SUB(x => x * 10),
+      age: x => x * 10,
       obj: merge.SUB({ replaced: true })
     })
     o(newState).deepEquals({ age: 100, name: 'bob', obj: { replaced: true } })
@@ -66,7 +66,7 @@ o.spec('mergerino', () => {
       0,
       null,
       () => ({ age: 10 }),
-      [[[[[[[{ age: merge.SUB(x => x * 3) }]]]]]]]
+      [[[[[[[{ age: x => x * 3 }]]]]]]]
     )
     o(newState).notEquals(state)
     o(state).deepEquals({ foo: 'bar' })
