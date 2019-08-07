@@ -13,13 +13,18 @@ const noAssignMerge = require(depPath)
 Object.assign = save
 
 o.spec('mergerino', () => {
-  o('DEL works', () => {
+  o('deleting works', () => {
     const state = { prop: true, other: true, deep: { prop: 'foo' } }
-    const newState = merge(state, { prop: merge.DEL, deep: { prop: merge.DEL } })
-    o(newState).deepEquals({ other: true, deep: {} })
+    const newState = merge(state, {
+      prop: undefined,
+      deep: { prop: undefined },
+      fake: undefined, // deleting non existent key
+      other: null
+    })
+    o(newState).deepEquals({ other: null, deep: {} })
     o(state).deepEquals({ prop: true, other: true, deep: { prop: 'foo' } })
   })
-  o('SUB works', () => {
+  o('function sub works', () => {
     const state = { age: 10, name: 'bob', obj: { prop: true } }
     const newState = merge(state, {
       age: x => x * 10,
@@ -28,12 +33,20 @@ o.spec('mergerino', () => {
     o(newState).deepEquals({ age: 100, name: 'bob', obj: { replaced: true } })
     o(state).deepEquals({ age: 10, name: 'bob', obj: { prop: true } })
   })
-  o('add new sub object', () => {
+  o('deep function sub to uncreated object path', () => {
+    const state = { orig: true }
+    const newState = merge(state, {
+      add: { stats: { count: x => (x == null ? 1 : x + 1) } }
+    })
+    o(newState).deepEquals({ orig: true, add: { stats: { count: 1 } } })
+    o(state).deepEquals({ orig: true })
+  })
+  o('add nested object', () => {
     const state = { age: 10 }
     const add = { sub: true }
     const newState = merge(state, { add })
     o(newState).deepEquals({ age: 10, add: { sub: true } })
-    o(newState.add).equals(add) // TODO: should it work like this?
+    o(newState.add).notEquals(add)
     o(newState).notEquals(state)
   })
   o('deep merge objects', () => {
@@ -81,7 +94,7 @@ o.spec('mergerino', () => {
   })
   o('array patches', () => {
     const arr = [1, 2, 3]
-    const newArr = merge(arr, { 2: 100 }, { 0: merge.DEL }, { 0: 200 })
+    const newArr = merge(arr, { 2: 100 }, { 0: undefined }, { 0: 200 })
     o(newArr).notEquals(arr)
     o(newArr).deepEquals([200, 100])
     o(arr).deepEquals([1, 2, 3])

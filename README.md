@@ -9,7 +9,7 @@ Mergerino works very well with the [meiosis](http://meiosis.js.org/) state manag
 ## ESM installation
 
 ```js
-import merge, { SUB, DEL } from 'https://unpkg.com/mergerino?module'
+import merge, { SUB } from 'https://unpkg.com/mergerino?module'
 
 const state = {
   user: {
@@ -26,7 +26,7 @@ const state = {
 const newState = merge(state, {
   user: {
     name: 'Bob',
-    weight: DEL,
+    weight: undefined,
     age: age => age / 2
   },
   other: SUB({ replaced: true })
@@ -46,7 +46,7 @@ result = {
 */
 ```
 
-[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvEAXwvW10QICsEqdBk2J4IWAA60ATsQAEOaQHMYFOcDkBlAKoAhNQBEAogBk5rOWGm0scgOQliEuIgD0rgK5oJAayX46LFdFFWkINFoAfixaABMPWDsAHTQUoTh5DIxGOQBedRS5OQ84GGlEArQioswcCrsAKVpCNDsKQuqAdxgIJRIKgEYADgAGdqrqjBUKgGYAFnHquUIevuJBgHYNjvYO2mIV8sqlrAw0AE8K4mkPVQ6iiWsJMuIIeCubmB2U1jT6DLkaBgnU0xGyMDyCjKKgAFFlGGpgB0SmUKkiJjUuPVdLQAEZte5ybq9fpyYwmRaTaZyKYQ3IAPhpKjkrjkACYdpT9ocKjpdDCNNIYBIoBhqDBYh9buYAJQ-OWpNDpWiwfBQWhKOFghH2JIpNqA4Gg8EyyggUqwaivf54NkzRDzNgcEC1bgEahwAQ0eiMZg8NgAXVYQA)
+[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvEAXwvW10QICsEqdBk2J4IWAA60ATsQAEOaQHMYFOcDkBlAKoAhOazlhptLHIDkJYhLiIA9HYCuaCQGsl+OljuKV0iGi0APxYtAAmjrDmADposUJw8okYjHIAvOqxcnKOcDDSiJlo2dmYOIXmAFK0hGjmFFklAO4wEEokhQCMABwADA3FJRgqhQDMACwDJXKEre3EXQDsi43sjbTEswVF01gYaACehcTSjqqN2RImEvnEEPDHpzCrsazx9IlyaDBNmsQpMHSCnyKgAFMlGGpgI1cvlCtDBqUuBVdLQAEb1C5yFptDo5NBhGCQb5hKZDEZyYaAtIAPkpKjkdjkACZVmSNltCjpdKCNNIYBIoBhqDAwo8zgYAJSvaVxNAJWiwfBQWhKUHmGRtAIYKD1OQQmCyhVKlVq8wSFLUWZhPXfX7-RiSyggPKwah3D54ZnjRCjZlsDggMrcAjUOACGj0RjMHhsAC6rCAA)
 
 - `state` is left intact
 - each part of `state` that your patch instruction touched will be shallow copied into `newState`
@@ -72,7 +72,7 @@ result = {
   const newState = mergerino(state, {
     user: {
       name: 'Bob',
-      weight: mergerino.DEL,
+      weight: undefined,
       age: function(age) {
         return age / 2
       }
@@ -95,19 +95,19 @@ result = {
 </script>
 ```
 
-[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHjmoCcIAHYgAjgdqAXgA6IEsW5xEAelkBXNNwDWAc3x0ssnBzUwuaWuIB8LWey68TlEHBixqxCPQSIQABkQBWAIwgAXwp0bFx3fAArBCo6BiZiPFi4fmSMRj5hPmBRND4+BXsORCycvLzMHGKAcgApWkI0KopSsoB3GAg1EmLfAA4PZtyyjH1igGYAFkGyvkIOruIegHYllqCW2mI5opKhvKwMNABPYuIOBRhpsu4OWm4DZ3hT85g1nICcpP40GFaAZWIaRgGT4un0hloAApUowKLs8gUDMVsns+BUYNUAEK0ABGTRaeXanW6oIM4IgRnwABEAKIAGSueRGGL4zIyJlZ+j4sj4ACY1ldNttimCDBTaPg-gBVTGQ4B8DgwbhQDDUGAAE2eFz4AQAlO99WhPq5aLB8FBaGpoYDYXwqqIck00b8AUDdbZ7I5nK48LzfIhJoFgiB0XhNHBojR6IxmO5AgBdAJAA)
+[playground](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHjmoCcIAHYgAjgdqAXgA6IEsW5xEAelkBXNNwDWAc3x0ssnBzUwuaWuIB8LWey68TlEHBixqxCPQSIQABkQBWAIwgAXwp0bFx3fAArBCo6BiZiPFi4fmSMRj5hPmBRND4+BXsORCycvLzMHGKAcgApWkI0KopSsoB3GAg1EmLfAA4PZtyyjH1igGYAFkGyvkIOruIegHYllqCW2mI5opKhvKwMNABPYuIOBRhpsu4OWm4DZ3hT85g1nICcpP40GFaAZWIaRgGT4un0hloAApUowKLs8gUDMVsns+BUYNUAEK0ABGTRaeXanW6+TQABMYJAfmSrnkRhi+GAlE4XGhIfSAJTwmZ8DgwYgKDi5el8WR8ABMBL4HyG6yGm22xTBBggRnwfwAqpjIcBeTBuFAMNQYGTnhdpRz3pa0J9XLRYPgoLQ1JCqrQuGpVRgoE0BIDGNakvaYI7na7uGlqHMyb6fv9-TBrbZ7I5nK48OKJogxuLAsEQOi8Jo4NEaPRGMx3IEALoBIA)
 
 ## Usage Guide
 
-Mergerino is made up of a single function `merge(target, ...patches)`, plus 2 helpers `DEL` and `SUB`.
+Mergerino is made up of a single function `merge(target, ...patches)`, plus 1 helper function, `SUB`.
 
-Patches in mergerino are expressed as plain old JavaScript objects:
+Patches in mergerino are expressed as plain JavaScript objects:
 
 ```js
 merge(state, { I: { am: { just: { an: 'object' } } } })
 ```
 
-Mergerino is immutable meaning that the `target` object passed will never be mutated (changed). Instead each object along the path your patch specifies will be shallow copied into a new object.
+Mergerino merges immutably meaning that the `target` object will never be mutated (changed). Instead each object along the path your patch specifies will be shallow copied into a new object.
 
 The advantage of this is that patch operations are relatively quick because they only copy the parts of the object that are touched.
 
@@ -120,16 +120,18 @@ console.log(state === newState) // false
 console.log(state.obj === newState.obj) // true
 ```
 
-If you want to fully remove a property from an object you can use `DEL`
+If you want to fully remove a property from an object specify `undefined` as the value.
 
 ```js
 const state = { deleteMe: true }
-const newState = merge(state, { deleteMe: DEL })
+const newState = merge(state, { deleteMe: undefined })
 console.log(state) // { deleteMe: true }
 console.log(newState) // {}
 ```
 
-If you want to replace a property based on its current value, use a function. To bypass merging logic and fully replace a property you can use `SUB`.
+Use `null` instead of `undefined` if you don't want the key to be deleted.
+
+If you want to replace a property based on its current value, use a function. You can bypass merging logic and fully replace a property by using `SUB`.
 
 ```js
 const state = { age: 10, obj: { foo: 'bar' } }
@@ -138,7 +140,7 @@ console.log(state) // { age: 10, obj: { foo: 'bar' } }
 console.log(newState) // { age: 20, obj: { replaced: true } }
 ```
 
-If you pass a function it will receive the current value as an argument and the return value will be the replacement. If you use `SUB` the value you pass will bypass merging logic and simple overwrite the property (this is mainly useful for objects).
+If you pass a function it will receive the current value as an argument and the return value will be the replacement. If you use `SUB` the value you pass will bypass merging logic and simple overwrite the property (this is mainly useful for bypassing merging logic for objects or replacement logic for functions).
 
 ## Multiple Patches
 
@@ -174,7 +176,7 @@ patches === [{ week: 56 }, false, [false, false]]
 
 Since falsy patches are ignored only `{ week: 56 }` will be merged.
 
-Another option is to use the spread operator to combine multiple patches into one, but it's harder/messier to write conditions using this technique:
+Another option is to use the spread operator to combine multiple patches into one, but it's harder/messier to write conditions using this technique as you can see:
 
 ```js
 merge(state, {
@@ -211,4 +213,6 @@ console.log(state) // { count: 10, newProp: true, double: 20 }
 
 ## Credits
 
-Heavily inspired by [patchinko](https://github.com/barneycarroll/patchinko) by [Barney Carroll](https://github.com/barneycarroll).
+Check out [patchinko](https://github.com/barneycarroll/patchinko) by [Barney Carroll](https://github.com/barneycarroll). It was a huge inspiration for `mergerino`.
+
+It takes a much more explicit approach to signaling patch operations and has some interesting API options.
