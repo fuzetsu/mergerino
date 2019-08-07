@@ -12,10 +12,10 @@ const run = (isArr, copy, patch) => {
     else {
       for (const k of Object.keys(patch)) {
         const val = patch[k]
-        if (val == null || typeof val !== 'object' || Array.isArray(val)) copy[k] = val
+        if (typeof val === 'function') copy[k] = val(copy[k])
+        else if (val == null || typeof val !== 'object' || Array.isArray(val)) copy[k] = val
         else if (val === DEL) isArr && !isNaN(k) ? copy.splice(k, 1) : delete copy[k]
-        else if (val._SUB === _SUB)
-          copy[k] = typeof val.run === 'function' ? val.run(copy[k]) : val.run
+        else if (val._SUB === _SUB) copy[k] = val.run
         else if (typeof copy[k] === 'object' && val !== copy[k]) copy[k] = merge(copy[k], val)
         else copy[k] = val
       }
