@@ -154,4 +154,10 @@ o.spec('mergerino', () => {
     const newState = merge(void 0, { foo: 'bar' })
     o(newState).deepEquals({ foo: 'bar' })
   })
+  o('replace primitive with object and vice versa', () => {
+    const state = { count: 10, foo: { prop: true } }
+    const newState = merge(state, { count: { prop: true }, foo: 10 })
+    o(state).deepEquals({ count: 10, foo: { prop: true } })
+    o(newState).deepEquals({ count: { prop: true }, foo: 10 })
+  })
 })
