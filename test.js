@@ -28,7 +28,11 @@ o.spec('mergerino', () => {
     const state = { age: 10, name: 'bob', obj: { prop: true } }
     const newState = merge(state, {
       age: x => x * 10,
-      obj: merge.SUB({ replaced: true })
+      obj: () => ({ replaced: true }),
+      name: (x, m) => {
+        o(m).equals(merge) // verify that merge is passed as second arg
+        return x
+      }
     })
     o(newState).deepEquals({ age: 100, name: 'bob', obj: { replaced: true } })
     o(state).deepEquals({ age: 10, name: 'bob', obj: { prop: true } })
@@ -60,10 +64,10 @@ o.spec('mergerino', () => {
   })
   o('function patch', () => {
     const state = { age: 10, foo: 'bar' }
-    const newState = merge(state, s => {
+    const newState = merge(state, (s, m) => {
       o(s).notEquals(state)
       o(s).deepEquals(state)
-      return { prop: true }
+      return merge(s, { prop: true })
     })
     o(newState).deepEquals({ age: 10, foo: 'bar', prop: true })
   })
@@ -78,7 +82,7 @@ o.spec('mergerino', () => {
       '',
       0,
       null,
-      () => ({ age: 10 }),
+      (s, m) => m(s, { age: 10 }),
       [[[[[[[{ age: x => x * 3 }]]]]]]]
     )
     o(newState).notEquals(state)
@@ -110,14 +114,7 @@ o.spec('mergerino', () => {
   o('top level SUB', () => {
     const state = { age: 20, foo: 'bar' }
     const replacement = { replaced: true }
-    const newState = merge(state, merge.SUB(replacement))
-    o(newState).notEquals(state)
-    o(newState).equals(replacement)
-  })
-  o('top level SUB from function patch', () => {
-    const state = { age: 20, foo: 'bar' }
-    const replacement = { replaced: true }
-    const newState = merge(state, () => merge.SUB(replacement))
+    const newState = merge(state, () => replacement)
     o(newState).notEquals(state)
     o(newState).equals(replacement)
   })

@@ -9,7 +9,7 @@ Mergerino works very well with the [meiosis](http://meiosis.js.org/) state manag
 ## ESM installation
 
 ```js
-import merge, { SUB } from 'https://unpkg.com/mergerino?module'
+import merge from 'https://unpkg.com/mergerino?module'
 
 const state = {
   user: {
@@ -29,7 +29,7 @@ const newState = merge(state, {
     weight: undefined,
     age: age => age / 2
   },
-  other: SUB({ replaced: true })
+  other: () => ({ replaced: true })
 })
 
 /*
@@ -77,7 +77,9 @@ result = {
         return age / 2
       }
     },
-    other: mergerino.SUB({ replaced: true })
+    other: function() {
+      return { replaced: true }
+    }
   })
 
   /*
@@ -99,7 +101,7 @@ result = {
 
 ## Usage Guide
 
-Mergerino is made up of a single function `merge(target, ...patches)`, plus 1 helper function, `SUB`.
+Mergerino is made up of a single function `merge(target, ...patches)`.
 
 Patches in mergerino are expressed as plain JavaScript objects:
 
@@ -131,16 +133,16 @@ console.log(newState) // {}
 
 Use `null` instead of `undefined` if you don't want the key to be deleted.
 
-If you want to replace a property based on its current value, use a function. You can bypass merging logic and fully replace a property by using `SUB`.
+If you want to replace a property based on its current value, use a function.
 
 ```js
 const state = { age: 10, obj: { foo: 'bar' } }
-const newState = merge(state, { age: x => x * 2, obj: SUB({ replaced: true }) })
+const newState = merge(state, { age: x => x * 2, obj: () => ({ replaced: true }) })
 console.log(state) // { age: 10, obj: { foo: 'bar' } }
 console.log(newState) // { age: 20, obj: { replaced: true } }
 ```
 
-If you pass a function it will receive the current value as an argument and the return value will be the replacement. If you use `SUB` the value you pass will bypass merging logic and simple overwrite the property (this is mainly useful for bypassing merging logic for objects or replacement logic for functions).
+If you pass a function it will receive the current value as the first argument and the merge function as the second. The return value will be the replacement. The value you return will bypass merging logic and simply overwrite the property. This is useful when you want to replace an object without merging. If you would like to merge from within a function patch then use the merge function provided as the second argument.
 
 ## Multiple Patches
 
@@ -195,7 +197,7 @@ merge(state, {
 
 Mergerino can be used as a reducer where patches are fed into a function which is then applied to a central state object. In these cases you may not have a reference to the full state object to base your patch on.
 
-In order to help in this scenario mergerino supports passing a function as a top level patch. This function receives the merge target as an argument and treats the return value as a patch.
+In order to help in this scenario mergerino supports passing a function as a top level patch. This function acts exactly the same as a function passed to a specific property. It receives the full state object as the first argument, the merge function as the second.
 
 ```js
 // state-manager.js
@@ -205,10 +207,14 @@ const update = patch => (state = merge(state, patch))
 // other.js
 update({ newProp: true })
 // want to use value of count to patch
-update(state => ({ double: state.count * 2 }))
+update((state, m) => m(state, { double: state.count * 2 }))
 
 // back in state-manager.js
 console.log(state) // { count: 10, newProp: true, double: 20 }
+
+// if you don't use the merge function the top level object will be replaced
+update(state => ({}))
+console.log(state) // {}
 ```
 
 ## Credits
