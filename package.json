@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/fuzetsu/mergerino#readme",
   "devDependencies": {
-    "buble": "^0.19.7",
+    "buble": "^0.19.8",
     "ospec": "^3.1.0",
     "terser": "^3.17.0"
   }
