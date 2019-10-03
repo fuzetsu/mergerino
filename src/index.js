@@ -20,7 +20,7 @@ const run = (isArr, copy, patch) => {
 
 const merge = (source, ...patches) => {
   const isArr = Array.isArray(source)
-  return run(isArr, isArr ? source.slice() : assign({}, source), patches)
+  return run(isArr, isArr ? source.slice() : assign(Object.create(Object.getPrototypeOf(source)), source), patches)
 }
 
 export default merge
