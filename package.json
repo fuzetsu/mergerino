@@ -7,7 +7,7 @@
   "module": "dist/mergerino.min.js",
   "scripts": {
     "build": "node build.js && npm test",
-    "test": "ospec test.js"
+    "test": "ava test.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/fuzetsu/mergerino#readme",
   "devDependencies": {
+    "ava": "^3.5.0",
     "buble": "^0.19.8",
     "ospec": "^4.0.0",
     "terser": "^4.1.3"
