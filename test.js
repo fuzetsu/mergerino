@@ -2,7 +2,7 @@
 /* global require */
 const o = require('ospec')
 
-const depPath = './dist/mergerino.es5.js'
+const depPath = './dist/mergerino.js'
 const merge = require(depPath)
 
 // create version that uses assign polyfill
@@ -142,7 +142,10 @@ o.spec('mergerino', () => {
   })
   o('multi function patch, only copy once', () => {
     const copies = []
-    merge({ key: 'value' }, Array.from({ length: 5 }, () => state => (copies.push(state), state)))
+    merge(
+      { key: 'value' },
+      Array.from({ length: 5 }, () => state => (copies.push(state), state))
+    )
     o(copies.length).equals(5)
     o(typeof copies[0]).equals('object')
     copies.every(copy => o(copy).equals(copies[0]))

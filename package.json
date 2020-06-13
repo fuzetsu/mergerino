@@ -2,11 +2,14 @@
   "name": "mergerino",
   "version": "0.4.0",
   "description": "immutable state merge util",
-  "source": "src/index.js",
-  "main": "dist/mergerino.es5.min.js",
-  "module": "dist/mergerino.min.js",
+  "source": "mergerino.js",
+  "main": "dist/mergerino.js",
+  "umd:main": "dist/mergerino.umd.js",
+  "module": "dist/mergerino.module.js",
+  "esmodule": "dist/mergerino.modern.js",
   "scripts": {
-    "build": "node build.js && npm test",
+    "build": "microbundle && npm run test",
+    "dev": "microbundle watch",
     "test": "ospec test.js"
   },
   "repository": {
@@ -25,8 +28,7 @@
   },
   "homepage": "https://github.com/fuzetsu/mergerino#readme",
   "devDependencies": {
-    "buble": "^0.19.8",
-    "ospec": "^4.1.1",
-    "terser": "^4.6.11"
+    "microbundle": "^0.12.0",
+    "ospec": "^4.1.1"
   }
 }
