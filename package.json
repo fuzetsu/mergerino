@@ -4,8 +4,9 @@
   "description": "immutable state merge util",
   "source": "mergerino.js",
   "main": "dist/mergerino.js",
+  "umd:main": "dist/mergerino.umd.js",
   "module": "dist/mergerino.module.js",
-  "unpkg": "dist/mergerino.umd.js",
+  "esmodule": "dist/mergerino.modern.js",
   "scripts": {
     "build": "microbundle && npm run test",
     "dev": "microbundle watch",
