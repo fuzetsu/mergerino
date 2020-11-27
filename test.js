@@ -64,7 +64,7 @@ o.spec('mergerino', () => {
   })
   o('function patch', () => {
     const state = { age: 10, foo: 'bar' }
-    const newState = merge(state, (s, m) => {
+    const newState = merge(state, s => {
       o(s).notEquals(state)
       o(s).deepEquals(state)
       return merge(s, { prop: true })
@@ -142,7 +142,10 @@ o.spec('mergerino', () => {
   })
   o('multi function patch, only copy once', () => {
     const copies = []
-    merge({ key: 'value' }, Array.from({ length: 5 }, () => state => (copies.push(state), state)))
+    merge(
+      { key: 'value' },
+      Array.from({ length: 5 }, () => state => (copies.push(state), state))
+    )
     o(copies.length).equals(5)
     o(typeof copies[0]).equals('object')
     copies.every(copy => o(copy).equals(copies[0]))
