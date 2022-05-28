@@ -9,7 +9,7 @@ const run = (isArr, copy, patch) => {
         const val = patch[k]
         if (typeof val === 'function') copy[k] = val(copy[k], merge)
         else if (val === undefined) isArr && !isNaN(k) ? copy.splice(k, 1) : delete copy[k]
-        else if (val === null || typeof val !== 'object' || Array.isArray(val)) copy[k] = val
+        else if (val === null || typeof val !== 'object' || val.constructor !== Object || Array.isArray(val)) copy[k] = val
         else if (typeof copy[k] === 'object') copy[k] = val === copy[k] ? val : merge(copy[k], val)
         else copy[k] = run(false, {}, val)
       }
